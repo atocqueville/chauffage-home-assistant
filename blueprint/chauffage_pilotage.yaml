@@ -18,26 +18,20 @@ blueprint:
           domain: input_select
           
     # SCHEDULES
-    entity_schedule_semaine_absent:
-      name: Schedule semaine Absent
-      description: Entité générée par schedule pour la planification la semaine absence
+    entity_schedule_absent:
+      name: Scheduler Absent
+      description: Entité générée par schedule pour la planification si absence
       selector:
         entity:
           domain: switch
-    entity_schedule_weekend_absent:
-      name: Schedule weekend Absent
-      description: Entité générée par schedule pour la planification le weekend absence
-      selector:
-        entity:
-          domain: switch
-    entity_schedule_semaine_present:
-      name: Schedule semaine Présent
+    entity_schedule_present_semaine:
+      name: Schedule semaine présent
       description: Entité générée par schedule pour la planification la semaine présent
       selector:
         entity:
           domain: switch
-    entity_schedule_weekend_present:
-      name: Schedule weekend Présent
+    entity_schedule_present_weekend:
+      name: Schedule weekend présent
       description: Entité générée par schedule pour la planification le weekend présent
       selector:
         entity:
@@ -84,10 +78,9 @@ action:
           - service: switch.turn_off
             target:
               entity_id:
-                - !input entity_schedule_semaine_absent
-                - !input entity_schedule_weekend_absent
-                - !input entity_schedule_semaine_present
-                - !input entity_schedule_weekend_present
+                - !input entity_schedule_absent
+                - !input entity_schedule_present_semaine
+                - !input entity_schedule_present_weekend
           - service: automation.turn_off
             target:
               entity_id: !input entity_thermostat_tpi
@@ -109,10 +102,9 @@ action:
           - service: switch.turn_off
             target:
               entity_id:
-                - !input entity_schedule_semaine_absent
-                - !input entity_schedule_weekend_absent
-                - !input entity_schedule_semaine_present
-                - !input entity_schedule_weekend_present
+                - !input entity_schedule_absent
+                - !input entity_schedule_present_semaine
+                - !input entity_schedule_present_weekend
 
       # ----- Mode Auto
       - conditions:
@@ -133,8 +125,12 @@ action:
                 - service: switch.turn_on
                   target:
                     entity_id:
-                      - !input entity_schedule_semaine_absent
-                      - !input entity_schedule_weekend_absent
+                      - !input entity_schedule_absent
+                 - service: switch.turn_off
+                  target:
+                    entity_id:
+                      - !input entity_schedule_present_semaine
+                      - !input entity_schedule_present_weekend
 
             # ----- Presence ON
             - conditions:
@@ -148,17 +144,21 @@ action:
                 - service: switch.turn_on
                   target:
                     entity_id:
-                      - !input entity_schedule_semaine_present
-                      - !input entity_schedule_weekend_present
+                      - !input entity_schedule_present_semaine
+                      - !input entity_schedule_present_weekend
+                - service: switch.turn_off
+                  target:
+                    entity_id:
+                      - !input entity_schedule_absent
+
     # ----- Mode manuel
     default:
       - service: switch.turn_off
         target:
           entity_id:
-            - !input entity_schedule_semaine_absent
-            - !input entity_schedule_weekend_absent
-            - !input entity_schedule_semaine_present
-            - !input entity_schedule_weekend_present
+            - !input entity_schedule_absent
+            - !input entity_schedule_present_semaine
+            - !input entity_schedule_present_weekend
       - service: automation.turn_on
         target:
           entity_id: !input entity_thermostat_tpi
