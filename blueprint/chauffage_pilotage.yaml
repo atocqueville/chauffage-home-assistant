@@ -16,25 +16,47 @@ blueprint:
       selector:
         entity:
           domain: input_select
-    entity_schedule_semaine:
-      name: Schedule semaine
-      description: Entité générée par schedule pour la planification la semaine
+          
+    # SCHEDULES
+    entity_schedule_semaine_absent:
+      name: Schedule semaine Absent
+      description: Entité générée par schedule pour la planification la semaine absence
       selector:
         entity:
           domain: switch
-    entity_schedule_weekend:
-      name: Schedule weekend
-      description: Entité générée par schedule pour la planification le weekend
+    entity_schedule_weekend_absent:
+      name: Schedule weekend Absent
+      description: Entité générée par schedule pour la planification le weekend absence
       selector:
         entity:
           domain: switch
+    entity_schedule_semaine_present:
+      name: Schedule semaine Présent
+      description: Entité générée par schedule pour la planification la semaine présent
+      selector:
+        entity:
+          domain: switch
+    entity_schedule_weekend_present:
+      name: Schedule weekend Présent
+      description: Entité générée par schedule pour la planification le weekend présent
+      selector:
+        entity:
+          domain: switch
+          
     entity_thermostat_tpi:
       name: Thermostat
       description: Entité de gestion du thermostat TPI
       selector:
         entity:
           domain: automation
-
+     entity_presence:
+       name: Présence
+       description: Entité de détection de présence
+       selector:
+         entity:
+           domain: binary_sensor
+           device_class: presence
+    
 
 # Température pour le hors gel
 variables:
@@ -88,21 +110,42 @@ action:
                 - !input entity_schedule_semaine
                 - !input entity_schedule_weekend
 
-      # ----- Mode Auto - confort
+      # ----- Mode Auto
       - conditions:
           - condition: state
             entity_id: !input entity_mode
             state: auto
         sequence:
-          - service: automation.turn_on
-            target:
-              entity_id: !input entity_thermostat_tpi
-          - service: switch.turn_on
-            target:
-              entity_id:
-                - !input entity_schedule_semaine
-                - !input entity_schedule_weekend
+          - choose:
+            # ----- Presence OFF
+            - conditions:
+                - condition: state
+                  entity_id: !input entity_presence
+                  state: off
+              sequence:
+                - service: automation.turn_on
+                  target:
+                    entity_id: !input entity_thermostat_tpi
+                - service: switch.turn_on
+                  target:
+                    entity_id:
+                      - !input entity_schedule_semaine_absent
+                      - !input entity_schedule_weekend_absent
 
+            # ----- Presence ON
+            - conditions:
+                - condition: state
+                  entity_id: !input entity_presence
+                  state: on
+              sequence:
+                - service: automation.turn_on
+                  target:
+                    entity_id: !input entity_thermostat_tpi
+                - service: switch.turn_on
+                  target:
+                    entity_id:
+                      - !input entity_schedule_semaine_present
+                      - !input entity_schedule_weekend_present
     # ----- Mode manuel
     default:
       - service: switch.turn_off
