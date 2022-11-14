@@ -114,7 +114,7 @@ action:
             state: auto
           - condition: state
             entity_id: entity_presence
-            below: "on"
+            state: "on"
         sequence:
           - service: automation.turn_on
             target:
@@ -136,7 +136,7 @@ action:
             state: auto
           - condition: state
             entity_id: entity_presence
-            below: "off"
+            state: "off"
         sequence:
           - service: automation.turn_on
             target:
