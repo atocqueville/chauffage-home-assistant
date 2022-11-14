@@ -44,14 +44,6 @@ blueprint:
         entity:
           domain: automation
 
-    entity_presence:
-      name: Présence
-      description: Entité de détection de présence
-      selector:
-        entity:
-          domain: binary_sensor
-          device_class: presence
-
 # Température pour le hors gel
 variables:
   temperature_hg: 10
@@ -112,44 +104,20 @@ action:
             entity_id: !input entity_mode
             state: auto
         sequence:
-          - choose:
-            # ----- Presence OFF
-            - conditions:
-                - condition: state
-                  entity_id: !input entity_presence
-                  state: off
-              sequence:
-                - service: automation.turn_on
-                  target:
-                    entity_id: !input entity_thermostat_tpi
-                - service: switch.turn_on
-                  target:
-                    entity_id:
-                      - !input entity_schedule_absent
-                - service: switch.turn_off
-                  target:
-                    entity_id:
-                      - !input entity_schedule_present_semaine
-                      - !input entity_schedule_present_weekend
-
-            # ----- Presence ON
-            - conditions:
-                - condition: state
-                  entity_id: !input entity_presence
-                  state: on
-              sequence:
-                - service: automation.turn_on
-                  target:
-                    entity_id: !input entity_thermostat_tpi
-                - service: switch.turn_on
-                  target:
-                    entity_id:
-                      - !input entity_schedule_present_semaine
-                      - !input entity_schedule_present_weekend
-                - service: switch.turn_off
-                  target:
-                    entity_id:
-                      - !input entity_schedule_absent
+            - service: automation.turn_on
+              target:
+              entity_id: !input entity_thermostat_tpi
+            - service: switch.turn_on
+              target:
+              entity_id:
+                - !input entity_schedule_absent
+            - service: switch.turn_off
+              target:
+                entity_id:
+                  - !input entity_schedule_present_semaine
+                  - !input entity_schedule_present_weekend
+          
+           
 
     # ----- Mode manuel
     default:
