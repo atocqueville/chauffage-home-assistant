@@ -113,7 +113,7 @@ action:
             entity_id: !input entity_mode
             state: auto
           - condition: state
-            entity_id: entity_presence
+            entity_id: !input entity_presence
             state: "on"
         sequence:
           - service: automation.turn_on
@@ -135,7 +135,7 @@ action:
             entity_id: !input entity_mode
             state: auto
           - condition: state
-            entity_id: entity_presence
+            entity_id: !input entity_presence
             state: "off"
         sequence:
           - service: automation.turn_on
