@@ -60,8 +60,9 @@ alias: Pilotage chauffage générique
 description: ''
 trigger:
   - platform: state
-    entity_id: !input entity_mode
-    entity_id: !input entity_presence
+    entity_id:
+      - !input entity_mode
+      - !input entity_presence
 condition: []
 action:
   - choose:
