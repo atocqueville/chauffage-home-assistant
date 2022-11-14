@@ -49,14 +49,13 @@ blueprint:
       selector:
         entity:
           domain: automation
-      entity_presence:
-       name: Présence
-       description: Entité de détection de présence
+    entity_presence:
+      name: Présence
+      description: Entité de détection de présence
        selector:
-         entity:
-           domain: binary_sensor
-           device_class: presence
-    
+       entity:
+         domain: binary_sensor
+         device_class: presence
 
 # Température pour le hors gel
 variables:
