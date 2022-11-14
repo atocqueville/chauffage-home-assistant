@@ -49,7 +49,7 @@ blueprint:
       selector:
         entity:
           domain: automation
-     entity_presence:
+      entity_presence:
        name: Présence
        description: Entité de détection de présence
        selector:
