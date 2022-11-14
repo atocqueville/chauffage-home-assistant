@@ -61,6 +61,7 @@ description: ''
 trigger:
   - platform: state
     entity_id: !input entity_mode
+    entity_id: !input entity_presence
 condition: []
 action:
   - choose:
@@ -107,7 +108,6 @@ action:
                 - !input entity_schedule_present_weekend
 
       # ----- Mode Auto + Present
-      # - conditions: "{{ is_state('sensor.mode', 'Home') and repeat.index < 10 }}"
       - conditions:
           - condition: state
             entity_id: !input entity_mode
