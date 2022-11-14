@@ -126,7 +126,7 @@ action:
                   target:
                     entity_id:
                       - !input entity_schedule_absent
-                 - service: switch.turn_off
+                - service: switch.turn_off
                   target:
                     entity_id:
                       - !input entity_schedule_present_semaine
