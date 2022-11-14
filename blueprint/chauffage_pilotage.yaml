@@ -84,8 +84,10 @@ action:
           - service: switch.turn_off
             target:
               entity_id:
-                - !input entity_schedule_semaine
-                - !input entity_schedule_weekend
+                - !input entity_schedule_semaine_absent
+                - !input entity_schedule_weekend_absent
+                - !input entity_schedule_semaine_present
+                - !input entity_schedule_weekend_present
           - service: automation.turn_off
             target:
               entity_id: !input entity_thermostat_tpi
@@ -107,8 +109,10 @@ action:
           - service: switch.turn_off
             target:
               entity_id:
-                - !input entity_schedule_semaine
-                - !input entity_schedule_weekend
+                - !input entity_schedule_semaine_absent
+                - !input entity_schedule_weekend_absent
+                - !input entity_schedule_semaine_present
+                - !input entity_schedule_weekend_present
 
       # ----- Mode Auto
       - conditions:
@@ -151,8 +155,10 @@ action:
       - service: switch.turn_off
         target:
           entity_id:
-            - !input entity_schedule_semaine
-            - !input entity_schedule_weekend
+            - !input entity_schedule_semaine_absent
+            - !input entity_schedule_weekend_absent
+            - !input entity_schedule_semaine_present
+            - !input entity_schedule_weekend_present
       - service: automation.turn_on
         target:
           entity_id: !input entity_thermostat_tpi
