@@ -59,6 +59,7 @@ blueprint:
       selector:
         entity:
           domain: switch
+          multiple: true
 
 # Récupération des paramètres
 variables:
